@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block right-panel-content %}
+    <h3 style="margin-bottom: 30px">美食分类</h3>
+    {% for i in tags %}
+        {% if forloop.counter == 10 %}
+            <p></p>
+        {% endif %}
+        <span><a href="{% url 'kind' i.id %}"
+                 style="margin-right:5%;font-size: x-large;width: 30px">{{ i.name }}</a></span>
+    {% endfor %}
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

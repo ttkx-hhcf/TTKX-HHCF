@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block right-panel-content %}
+    <h3 style="margin-top: 20px;margin-bottom: 30px">美食详情</h3>
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-md-2 column">
+                <img alt="140x140" src="/media/{{ food.pic }}" width=140px height=200px />
+
+            </div>
+            <div class="col-md-10 column">
+                <ol class="list-unstyled">
+                    <li>
+                        菜名:{{ food.title }}
+                    </li>
+                    <li>
+                        价格:{{ food.price }}
+                    </li>
+                    <li>
+                        菜系:
+                        {% if food.tags %}
+                            {{ food.tags }}
+                        {% endif %} 无
+                    </li>
+                    <li>
+                        描述:{{ food.deal }}
+                    </li>
+                    <li>
+                        平均评分:{{ food_rate }}
+                    </li>
+                    {% if is_rate is not None %}
+                        <h4>您已经进行打分: {{ is_rate.mark }}</h4>
+                    {% else %}
+                        <li>
+                            <form action="{% url 'score' food.id %}" method="post">
+                                {% csrf_token %}
+                                <p>添加评分</p>
+                                <select name="score">
+                                    <option>1.0</option>
+                                    <option>1.5</option>
+                                    <option>2.0</option>
+                                    <option>2.5</option>
+                                    <option>3.0</option>
+                                    <option>3.5</option>
+                                    <option>4.0</option>
+                                    <option>4.5</option>
+                                    <option>5.0</option>
+                                </select>
+                                <button type="submit" class="btn btn-default">提交</button>
+                            </form>
+                        </li>
+
+                    {% endif %}
+                    <li>
+                        评分人数:{{ food.rate_set.count }}
+                    </li>
+                    <li>
+                        收藏人数:{{ food.collect.count }} ---{% if is_collect %}
+                        <a href="{% url 'decollect' food.id %}">取消收藏</a>{% else %}
+                        <a href="{% url 'collect' food.id %}">点击收藏</a>{% endif %}
+                    </li>
+                    <li>
+                        <div class="bdsharebuttonbox">
+                            <p>分享到:</p>
+                            <a href="#" class="bds_weixin" data-cmd="weixin"
+                               title="分享到微信"></a><a href="#" class="bds_sqq"
+                                                    data-cmd="sqq"
+                                                    title="分享到QQ好友"></a><a href="#"
+                                                                           class="bds_tsina"
+                                                                           data-cmd="tsina"
+                                                                           title="分享到新浪微博"></a><a
+                                href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#"
+                                                                                                    class="bds_douban"
+                                                                                                    data-cmd="douban"
+                                                                                                    title="分享到豆瓣网"></a><a
+                                href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="#"
+                                                                                                   class="bds_qzone"
+                                                                                                   data-cmd="qzone"
+                                                                                                   title="分享到QQ空间"></a>
+                        </div>
+                        <script>window._bd_share_config = {
+                            "common": {
+                                "bdSnsKey": {},
+                                "bdText": "",
+                                "bdMini": "1",
+                                "bdMiniList": false,
+                                "bdPic": "",
+                                "bdStyle": "1",
+                                "bdSize": "24"
+                            }, "share": {}
+                        };
+                        with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <br>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <form class="form" fole="form" action="{% url 'comment' food.id %}" method="post">
+                    {% csrf_token %}
+                    <textarea placeholder="快来说说点什么吧!" class="form-control" name="comment" cols="10"
+                              rows="10"></textarea>
+                    <br>
+                    <button type="submit" class="btn btn-success">提交评论</button>
+                </form>
+                <br>
+                <p>用户评论：</p>
+                {% for i in comments %}
+                    <blockquote>
+                        <p>{{ i.user.name }}:</p>
+                        <p>{{ i.content }} </p>
+                        <small>{{ i.create_time }}-----------<a
+                                href="{% url 'good' i.id food.id %}">点赞({{ i.good }})</a></small>
+
+                    </blockquote>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

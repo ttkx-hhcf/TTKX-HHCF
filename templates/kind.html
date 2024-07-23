@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block right-panel-content %}
+    <h3 style="text-align:center">{{ tags.name }}类美食</h3>
+    {% if not foods %}
+        <h2 style="margin-bottom: 30%" class="text-center">没有美食</h2>
+    {% endif %}
+    {% for food in foods %}
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-md-3 column">
+                    <img alt="140x140" src="/media/{{ food.pic }}" width=180px height=200px/>
+                </div>
+                <div class="col-md-7 column">
+                    <h3>
+                        <a href="{% url 'food' food.id %}">    {{ food.title }}</a>
+                    </h3>
+                    <p>{{ food.price }}</p>
+                    <p>{{ food.deal | slice:":100" }}......</p>
+                    <p>浏览量:{{ food.num }}</p>
+                </div>
+            </div>
+        </div><br>
+    {% endfor %}
+{% endblock %}

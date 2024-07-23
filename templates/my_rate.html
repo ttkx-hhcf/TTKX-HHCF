@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block right-panel-content %}
+    <h3>我的评分</h3>
+    <table class="table" style="margin-bottom: 10%">
+        <thead>
+        <tr>
+            <th>美食id</th>
+            <th>菜名</th>
+            <th>评分</th>
+            <th>时间</th>
+            <th>删除</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in rate %}
+            <tr>
+                <td>{{ i.food.id }}</td>
+                <td>{{ i.food.title }}</td>
+                <td>{{ i.mark }}</td>
+                <td>{{ i.create_time }}</td>
+                <td><a href="{% url 'delete_rate' i.id %}">删除</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
